@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import TauxAlc from './calcul/tauxAlcool';
+import CorrectionTemperatureDensite from './calcul/correctionTemperatureDensite';
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -22,9 +23,12 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
+const map = new Map();
+map.set("TauxAlc", TauxAlc);
+map.set("CorrectionTemperatureDensite", CorrectionTemperatureDensite);
+
 export default function RecipeReviewCard({intro, compoName}) {
-  const Tag = compoName;
-  console.log(Tag)
+  const Component = map.get(compoName);
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
@@ -32,7 +36,7 @@ export default function RecipeReviewCard({intro, compoName}) {
   };
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ width: '100%', display: 'flex', alignItems: 'center', flexDirection: 'column', justifyContent: 'center' }}>
       <CardHeader
         title="title"
       />
@@ -54,9 +58,9 @@ export default function RecipeReviewCard({intro, compoName}) {
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           <Typography paragraph>
-            <Tag />
+            {Component && <Component />}
           </Typography>
-          
+
         </CardContent>
       </Collapse>
     </Card>
