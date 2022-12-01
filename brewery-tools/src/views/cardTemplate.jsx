@@ -1,4 +1,5 @@
 import * as React from 'react';
+import './ct.css';
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -27,42 +28,46 @@ const map = new Map();
 map.set("TauxAlc", TauxAlc);
 map.set("CorrectionTemperatureDensite", CorrectionTemperatureDensite);
 
-export default function RecipeReviewCard({intro, compoName}) {
-  const Component = map.get(compoName);
+export default function RecipeReviewCard(props) {
+  const Component = map.get(props.info.compoName);
   const [expanded, setExpanded] = React.useState(false);
-
+  const hrefName = "#"+props.info.id
+  console.log(hrefName)
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
   return (
-    <Card sx={{ width: '100%', display: 'flex', alignItems: 'center', flexDirection: 'column', justifyContent: 'center' }}>
-      <CardHeader
-        title="title"
-      />
-      <CardContent>
-        <Typography variant="body2" color="text.secondary">
-          {intro}
-        </Typography>
-      </CardContent>
-      <CardActions disableSpacing>
-        <ExpandMore
-          expand={expanded}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </ExpandMore>
-      </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
+    <React.Fragment>
+      <a href={hrefName}></a>
+      <Card id={props.info.id} sx={{ width: '100%', display: 'flex', alignItems: 'center', flexDirection: 'column', justifyContent: 'center', margin: '10px'}}>
+        <CardHeader
+          title={props.info.title}
+        />
         <CardContent>
-          <Typography paragraph>
-            {Component && <Component />}
+          <Typography variant="body2" color="text.secondary">
+          {props.info.intro}
           </Typography>
-
         </CardContent>
-      </Collapse>
-    </Card>
+        <CardActions disableSpacing>
+          <ExpandMore
+            expand={expanded}
+            onClick={handleExpandClick}
+            aria-expanded={expanded}
+            aria-label="afficher calcul"
+          >
+            <ExpandMoreIcon />
+          </ExpandMore>
+        </CardActions>
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <CardContent>
+            <Typography paragraph>
+              {Component && <Component />}
+            </Typography>
+
+          </CardContent>
+        </Collapse>
+      </Card>
+    </React.Fragment>
   );
 }
